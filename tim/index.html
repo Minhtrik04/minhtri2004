@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trái Tim</title>
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .dot {
+            position: absolute;
+            width: 2px; /* Kích thước nhỏ */
+            height: 2px; /* Kích thước nhỏ */
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.8); /* Màu hồng sáng cho trái tim */
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .message {
+            color: rgba(255, 255, 255, 1); /* Màu chữ sáng hơn */
+            font-size: 48px;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            animation: glow 1.5s ease-in-out infinite alternate;
+            margin-top: 20px;
+            opacity: 0.9; /* Độ sáng của chữ */
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #ff416c, 0 0 20px #ff416c, 0 0 30px #ff416c, 0 0 40px #ff416c;
+                opacity: 0.7;
+            }
+            100% {
+                text-shadow: 0 0 20px #ff416c, 0 0 30px #ff416c, 0 0 40px #ff416c, 0 0 50px #ff416c;
+                opacity: 0.9;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Thêm thẻ <audio> để phát âm thanh nền -->
+    <audio id="background-music" loop autoplay>
+        <source src="2cd067d8aeae3541267d786b964cddbc.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="heart-container" id="heart-container"></div>
+    
+    <div class="message">
+        I Love You
+    </div>
+
+    <script>
+        const heartContainer = document.getElementById('heart-container');
+        
+        function heartFormula(t) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+            return { x, y };
+        }
+
+        function drawHeart() {
+            const totalHeartDots = 9000; // Tăng số lượng chấm trong trái tim
+            const totalAngle = Math.PI * 2;
+
+            for (let i = 0; i < totalHeartDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                const randomAngle = Math.random() * totalAngle; 
+                const scale = Math.random() * 0.7 + 0.3;
+                const heartPos = heartFormula(randomAngle);
+                const x = heartPos.x * scale * 12 + 200; 
+                const y = -heartPos.y * scale * 12 + 200;
+
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+
+                // Áp dụng màu hồng sáng hơn cho chấm
+                dot.style.background = `rgba(255, 105, 180, ${Math.random() * 0.8 + 0.2})`;
+
+                heartContainer.appendChild(dot);
+            }
+        }
+
+        function createStars() {
+            const totalStars = 250; // Tạo 250 ngôi sao
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('dot');
+
+                // Đặt vị trí ngẫu nhiên cho các ngôi sao
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+
+                // Màu trắng cho các ngôi sao (chấm)
+                star.style.background = `rgba(255, 255, 255, ${Math.random() * 0.8 + 0.2})`;
+
+                // Delay nhấp nháy ngẫu nhiên
+                star.style.animationDelay = `${Math.random() * 3}s`;
+
+                document.body.appendChild(star);
+            }
+        }
+
+        drawHeart(); 
+        createStars(); // Tạo các vì sao lấp lánh
+    </script>
+</body>
+</html>
